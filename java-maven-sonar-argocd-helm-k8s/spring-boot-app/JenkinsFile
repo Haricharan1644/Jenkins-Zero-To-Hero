@@ -48,6 +48,7 @@ pipeline {
     stage('Update Deployment File') {
     steps {
         // Run git commands in Jenkins workspace (not inside docker agent)
+            dir("${WORKSPACE}") {
             withCredentials([string(credentialsId: 'github', variable: 'GITHUB_TOKEN')]) {
                 sh '''
                     git config user.email "neelakantamharicharan@gmail.com"
@@ -61,6 +62,7 @@ pipeline {
                     git push https://${GITHUB_TOKEN}@github.com/Haricharan1644/Jenkins-Zero-To-Hero.git HEAD:main
                 '''
             }
+        }
     }
     }
   }
