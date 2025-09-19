@@ -49,6 +49,7 @@ pipeline {
       }
     }
    stage('Update Deployment File') {
+    agent { label 'master' }
     steps {
             withCredentials([string(credentialsId: 'github', variable: 'GITHUB_TOKEN')]) {
                 sh '''
