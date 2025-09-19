@@ -50,25 +50,26 @@ pipeline {
     }
    stage('Update Deployment File') {
     steps {
-      docker.image('haricharan435/maven-docker-agent:latest').inside(
-    "-u root -v /var/run/docker.sock:/var/run/docker.sock -v ${env.WORKSPACE}:${env.WORKSPACE}"
-          ) {
-            withCredentials([string(credentialsId: 'github', variable: 'GITHUB_TOKEN')]) {
-                sh '''
-                    git config user.email "neelakantamharicharan@gmail.com"
-                    git config user.name "Neelakantam Hari Charan"
+        script {
+            docker.image('haricharan435/maven-docker-agent:latest').inside(
+                "-u root -v /var/run/docker.sock:/var/run/docker.sock -v ${env.WORKSPACE}:${env.WORKSPACE}"
+            ) {
+                withCredentials([string(credentialsId: 'github', variable: 'GITHUB_TOKEN')]) {
+                    sh '''
+                        git config user.email "neelakantamharicharan@gmail.com"
+                        git config user.name "Neelakantam Hari Charan"
 
-                    # Update deployment file with new build number
-                    sed -i "s/replaceImageTag/${BUILD_NUMBER}/g" java-maven-sonar-argocd-helm-k8s/spring-boot-app-manifests/deployment.yml
+                        # Update deployment file with new build number
+                        sed -i "s/replaceImageTag/${BUILD_NUMBER}/g" java-maven-sonar-argocd-helm-k8s/spring-boot-app-manifests/deployment.yml
 
-                    git add java-maven-sonar-argocd-helm-k8s/spring-boot-app-manifests/deployment.yml
-                    git commit -m "Update deployment image to version ${BUILD_NUMBER}" || echo "No changes to commit"
-                    git push https://${GITHUB_TOKEN}@github.com/Haricharan1644/Jenkins-Zero-To-Hero.git HEAD:main
-                '''
+                        git add java-maven-sonar-argocd-helm-k8s/spring-boot-app-manifests/deployment.yml
+                        git commit -m "Update deployment image to version ${BUILD_NUMBER}" || echo "No changes to commit"
+                        git push https://${GITHUB_TOKEN}@github.com/Haricharan1644/Jenkins-Zero-To-Hero.git HEAD:main
+                    '''
+                }
             }
         }
     }
-
 }
 }
 }
