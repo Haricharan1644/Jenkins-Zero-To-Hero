@@ -49,6 +49,7 @@ pipeline {
     steps {
         // Run git commands in Jenkins workspace (not inside docker agent)
             dir("${WORKSPACE}") {
+            checkout scm
             withCredentials([string(credentialsId: 'github', variable: 'GITHUB_TOKEN')]) {
                 sh '''
                     git config user.email "neelakantamharicharan@gmail.com"
