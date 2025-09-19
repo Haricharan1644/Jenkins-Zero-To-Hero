@@ -46,23 +46,24 @@ pipeline {
       }
     }
     stage('Update Deployment File') {
-        environment {
-            GIT_REPO_NAME = "Jenkins-Zero-To-Hero"
-            GIT_USER_NAME = "Haricharan1644"
-        }
-        steps {
+    steps {
+        // Run git commands in Jenkins workspace (not inside docker agent)
+        container('') {
             withCredentials([string(credentialsId: 'github', variable: 'GITHUB_TOKEN')]) {
                 sh '''
                     git config user.email "neelakantamharicharan@gmail.com"
                     git config user.name "Neelakantam Hari Charan"
-                    BUILD_NUMBER=${BUILD_NUMBER}
+
+                    # Update deployment file with new build number
                     sed -i "s/replaceImageTag/${BUILD_NUMBER}/g" java-maven-sonar-argocd-helm-k8s/spring-boot-app-manifests/deployment.yml
+
                     git add java-maven-sonar-argocd-helm-k8s/spring-boot-app-manifests/deployment.yml
-                    git commit -m "Update deployment image to version ${BUILD_NUMBER}"
-                    git push https://${GITHUB_TOKEN}@github.com/${GIT_USER_NAME}/${GIT_REPO_NAME} HEAD:main
+                    git commit -m "Update deployment image to version ${BUILD_NUMBER}" || echo "No changes to commit"
+                    git push https://${GITHUB_TOKEN}@github.com/Haricharan1644/Jenkins-Zero-To-Hero.git HEAD:main
                 '''
             }
         }
+    }
     }
   }
 }
