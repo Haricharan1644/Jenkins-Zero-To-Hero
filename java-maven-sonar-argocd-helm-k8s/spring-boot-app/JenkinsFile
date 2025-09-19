@@ -45,11 +45,9 @@ pipeline {
         }
       }
     }
-    stage('Update Deployment File') {
+   stage('Update Deployment File') {
     steps {
-        // Run git commands in Jenkins workspace (not inside docker agent)
-            dir("${WORKSPACE}") {
-            checkout scm
+        dir("${env.WORKSPACE}") {
             withCredentials([string(credentialsId: 'github', variable: 'GITHUB_TOKEN')]) {
                 sh '''
                     git config user.email "neelakantamharicharan@gmail.com"
@@ -65,6 +63,7 @@ pipeline {
             }
         }
     }
-    }
+}
+
   }
 }
