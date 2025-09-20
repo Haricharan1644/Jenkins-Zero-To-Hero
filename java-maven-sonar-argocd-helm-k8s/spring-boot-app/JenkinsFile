@@ -9,10 +9,16 @@ pipeline {
     stage('Checkout') {
       steps {
         sh 'echo passed'
-        git branch: 'main',
-        credentialsId: 'github',
-        url: 'https://github.com/Haricharan1644/Jenkins-Zero-To-Hero.git'
-        //git branch: 'main', url: 'https://github.com/iam-veeramalla/Jenkins-Zero-To-Hero.git'
+        echo "Checking out source code..."
+        checkout([
+            $class: 'GitSCM',
+            branches: [[name: '*/main']],
+            doGenerateSubmoduleConfigurations: false,
+            extensions: [],
+            userRemoteConfigs: [[
+              url: 'https://github.com/Haricharan1644/Jenkins-Zero-To-Hero.git',
+              credentialsId: 'github'
+            ]]
       }
     }
     stage('Build and Test') {
