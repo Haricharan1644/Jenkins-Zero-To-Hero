@@ -25,6 +25,7 @@ pipeline {
       sh 'ls -la'
       sh 'ls -la .git || echo ".git not found"'
       sh 'git status'
+      sh 'git config --global --add safe.directory $WORKSPACE'
      sh '''
             git config user.email "neelakantamharicharan@gmail.com"
             git config user.name "Neelakantam Hari Charan"
