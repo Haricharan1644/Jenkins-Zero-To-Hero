@@ -20,6 +20,8 @@ pipeline {
               credentialsId: 'github'
             ]]
       ])
+      sh 'ls -la'
+      sh 'ls -la .git || echo ".git not found"'
 }
 }
     stage('Build and Test') {
