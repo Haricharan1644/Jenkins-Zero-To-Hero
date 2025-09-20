@@ -19,7 +19,7 @@ pipeline {
               url: 'https://github.com/Haricharan1644/Jenkins-Zero-To-Hero.git',
               credentialsId: 'github'
             ]]
-      }
+      ]
     }
     stage('Build and Test') {
       steps {
