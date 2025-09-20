@@ -11,10 +11,12 @@ pipeline {
         sh 'echo passed'
         echo "Checking out source code..."
         checkout([
-            $class: 'GitSCM',
-            branches: [[name: '*/main']],
-            doGenerateSubmoduleConfigurations: false,
-            extensions: [],
+             $class: 'GitSCM',
+             branches: [[name: 'main']],  // use main branch
+             doGenerateSubmoduleConfigurations: false,
+             extensions: [
+                    [$class: 'CloneOption', noTags: false, shallow: false, depth: 0, reference: '', timeout: 10]
+             ],
             userRemoteConfigs: [[
               url: 'https://github.com/Haricharan1644/Jenkins-Zero-To-Hero.git',
               credentialsId: 'github'
@@ -22,6 +24,7 @@ pipeline {
       ])
       sh 'ls -la'
       sh 'ls -la .git || echo ".git not found"'
+      sh 'git status'
      sh '''
             git config user.email "neelakantamharicharan@gmail.com"
             git config user.name "Neelakantam Hari Charan"
