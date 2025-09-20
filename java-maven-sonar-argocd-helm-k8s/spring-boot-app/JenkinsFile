@@ -70,9 +70,10 @@ pipeline {
     steps {
         script {
             docker.image('haricharan435/maven-docker-agent:latest').inside(
-                "-u root -v /var/run/docker.sock:/var/run/docker.sock -v ${env.WORKSPACE}:${env.WORKSPACE} -w ${env.WORKSPACE}"
+                "-u root -v /var/run/docker.sock:/var/run/docker.sock "
             ) {
                 withCredentials([string(credentialsId: 'github', variable: 'GITHUB_TOKEN')]) {
+                    sh "git config --global --add safe.directory ${env.WORKSPACE}"
                     
                     sh '''
                         git config user.email "neelakantamharicharan@gmail.com"
