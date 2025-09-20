@@ -52,7 +52,7 @@ pipeline {
     steps {
         script {
             docker.image('haricharan435/maven-docker-agent:latest').inside(
-                "-u root -v /var/run/docker.sock:/var/run/docker.sock -v ${env.WORKSPACE}:${env.WORKSPACE} "
+                "-u root -v /var/run/docker.sock:/var/run/docker.sock "
             ) {
                checkout scm
                 withCredentials([string(credentialsId: 'github', variable: 'GITHUB_TOKEN')]) {
