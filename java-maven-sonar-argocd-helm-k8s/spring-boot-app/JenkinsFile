@@ -55,6 +55,7 @@ pipeline {
                 "-u root -v /var/run/docker.sock:/var/run/docker.sock "
             ) {
                 withCredentials([string(credentialsId: 'github', variable: 'GITHUB_TOKEN')]) {
+                    checkout scm
                     sh '''
                         git config user.email "neelakantamharicharan@gmail.com"
                         git config user.name "Neelakantam Hari Charan"
